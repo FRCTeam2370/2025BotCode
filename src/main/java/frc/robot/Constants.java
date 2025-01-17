@@ -9,4 +9,9 @@ public final class Constants {
     public static class ElevatorConstants {
         public static int elevatorId = 14;
     }
+
+    public static class IntakeConstants {
+        public static int IntakeShoulderID = 15;
+        public static int IntakeRollersID = 16;
+    }
 }
