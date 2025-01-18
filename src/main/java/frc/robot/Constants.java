@@ -14,4 +14,9 @@ public final class Constants {
         public static int IntakeShoulderID = 15;
         public static int IntakeRollersID = 16;
     }
+
+    public static class ManipulatorConstants {
+        public static int manipulatorDriverID = 17;
+        public static int manipulatorPassengerID = 18;
+    }
 }
