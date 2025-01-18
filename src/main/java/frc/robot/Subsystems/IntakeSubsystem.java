@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ShoulderPos", getShoulderPos());
-    SmartDashboard.putNumber("ShoulderEror", IntakeShoulder.getClosedLoopError().getValueAsDouble());
+    SmartDashboard.putNumber("ShoulderEror", IntakeShoulder.getPosition().getValueAsDouble());
   }
 
   public static void setShoulderPos(double position){

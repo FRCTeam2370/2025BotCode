@@ -4,37 +4,38 @@
 
 package frc.robot.Commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorControl extends Command {
+public class ElevatorVoltage extends Command {
   ElevatorSubsystem mElevatorSubsystem;
-  double elevatorPos;
-  /** Creates a new ElevatorControl. */
-  public ElevatorControl(ElevatorSubsystem mElevatorSubsystem, double elevatorPos) {
+  Supplier<Double> voltage;
+  /** Creates a new ElevatorVoltage. */
+  public ElevatorVoltage(ElevatorSubsystem mElevatorSubsystem, Supplier<Double> voltage) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.mElevatorSubsystem = mElevatorSubsystem;
-    this.elevatorPos = elevatorPos;
+    this.voltage = voltage;
     addRequirements(mElevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    ElevatorSubsystem.stopElevator();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ElevatorSubsystem.setElevatorPos(elevatorPos);;//in percent -1.0 to 1.0
+    double volt = voltage.get();
+    ElevatorSubsystem.setElevatorVolt(volt);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ElevatorSubsystem.stopElevator();
   }
 
   // Returns true when the command should end.
