@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.ElevatorControl;
 import frc.robot.Commands.ElevatorVoltage;
 import frc.robot.Commands.SetIntakePos;
+import frc.robot.Commands.SetManipulator;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
+import frc.robot.Subsystems.ManipulatorSubsystem;
 
 public class RobotContainer {
 
@@ -21,6 +23,7 @@ public class RobotContainer {
   //Subsystem Instantiations
   private static ElevatorSubsystem mElevatorSubsystem = new ElevatorSubsystem();
   private static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private static ManipulatorSubsystem manipulatorSubsystem = new ManipulatorSubsystem();
 
   public RobotContainer() {
     configureBindings();
@@ -35,7 +38,9 @@ public class RobotContainer {
     driver.b().onTrue(new SetIntakePos(mIntakeSubsystem, 15));
     driver.x().onTrue(new SetIntakePos(mIntakeSubsystem, 10));
 
-    driver.rightBumper().toggleOnTrue(new ElevatorVoltage(mElevatorSubsystem, ()-> driver.getRawAxis(3)));
+    //driver.rightBumper().toggleOnTrue(new ElevatorVoltage(mElevatorSubsystem, ()-> driver.getRawAxis(3)));
+
+    driver.rightBumper().whileTrue(new SetManipulator(manipulatorSubsystem, 0.2));
   }
 
   public Command getAutonomousCommand() {

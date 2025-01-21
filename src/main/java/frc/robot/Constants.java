@@ -13,6 +13,9 @@ public final class Constants {
     public static class IntakeConstants {
         public static int IntakeShoulderID = 15;
         public static int IntakeRollersID = 16;
+        public static int IntakeEncoderID = 19;
+
+        public static double IntakeEncoderOffset = 0.2;//Change this to what ever the offset is
     }
 
     public static class ManipulatorConstants {

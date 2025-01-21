@@ -4,8 +4,10 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -17,15 +19,17 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   public static TalonFX IntakeShoulder = new TalonFX(Constants.IntakeConstants.IntakeShoulderID);
   public static TalonFX IntakeRollers = new TalonFX(Constants.IntakeConstants.IntakeRollersID);
+  public static CANcoder IntakeEncoder = new CANcoder(Constants.IntakeConstants.IntakeEncoderID);
 
   public static TalonFXConfiguration IntakeShoulderConfig = new TalonFXConfiguration();
   public static TalonFXConfiguration IntakeRollersConfig = new TalonFXConfiguration();
+  public static CANcoderConfiguration IntakeEncoderConfig = new CANcoderConfiguration();
 
   private static PositionDutyCycle ShoulderPosCycle = new PositionDutyCycle(0);
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    resetIntake();
+    configIntake();
   }
 
   @Override
@@ -33,6 +37,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ShoulderPos", getShoulderPos());
     SmartDashboard.putNumber("ShoulderEror", IntakeShoulder.getPosition().getValueAsDouble());
+
+    SmartDashboard.putNumber("IntakeEncoder", IntakeEncoder.getAbsolutePosition().getValueAsDouble());
   }
 
   public static void setShoulderPos(double position){
@@ -47,9 +53,17 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeShoulder.getPosition().getValueAsDouble();
   }
 
-  public static void resetIntake(){
+  public static double getCANcoderAbsPos(){
+    return IntakeEncoder.getAbsolutePosition().getValueAsDouble();
+  }
+
+  public static double CANcoderToFalcon(double CANcoderPos){
+    return 0;// needs conversion code!!!
+  }
+
+  public static void configIntake(){
     IntakeShoulderConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    IntakeRollersConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    IntakeRollersConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     IntakeShoulderConfig.Slot0.kP = 0.13;//You should probably set up some Gravity feedforward on this guy
     IntakeShoulderConfig.Slot0.kI = 0.03;
@@ -63,6 +77,10 @@ public class IntakeSubsystem extends SubsystemBase {
     ShoulderPosCycle.Slot = 0;
 
     IntakeShoulder.getConfigurator().apply(IntakeShoulderConfig);
-  }
 
+    //CANcoder configuration and other stuff
+    IntakeEncoderConfig.MagnetSensor.MagnetOffset = Constants.IntakeConstants.IntakeEncoderOffset;
+
+    IntakeEncoder.getConfigurator().apply(IntakeEncoderConfig);
+  }
 }

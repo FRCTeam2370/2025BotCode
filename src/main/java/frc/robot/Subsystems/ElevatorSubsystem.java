@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
-    resetElevator();//resets the elevator and sends the configs to the motor
+    configElevator();//resets the elevator and sends the configs to the motor
   }
 
   @Override
@@ -79,7 +79,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotor.set(0);
   }
 
-  public static void resetElevator(){
+  public static void configElevator(){
     //configures all of the values for PID and eventually Motion Magic --- Slot0 holds regular PID vals
     elevatorConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
